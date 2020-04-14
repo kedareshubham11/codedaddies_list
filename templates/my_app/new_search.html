@@ -1,56 +1,29 @@
 {% extends 'base.html'%}
-
+{% csrf_token %}
 {% block content %}
     <h2 style="text-align: center">{{ search | title }}</h2>
 
     <div class="row">
+    {% for post in final_postings %}
+    
     <div class="col s4">
       <div class="card">
+      <a href="{{ post.1 }}">
         <div class="card-image">
-          <img src="https://hrdogclub.org/wp-content/uploads/2018/12/PuppyKindergarten-1-1.jpg">
-          <span class="card-title">TEST Title</span>
+          <img src="{{ post.3 }}" href="{{ post.1 }}">
         </div>
+        </a>
         <div class="card-content">
-          <p> TEST CONTENT</p>
+          <p>{{ post.0 }}</p>
         </div>
         <div class="card-action">
-          <a href="#">TEST PRICE</a>
+          <a href="{{ post.1 }}">Price : {{ post.2 }}</a>
         </div>
       </div>
     </div>
-  
-
-  
-    <div class="col s4">
-      <div class="card">
-        <div class="card-image">
-          <img src="https://hrdogclub.org/wp-content/uploads/2018/12/PuppyKindergarten-1-1.jpg">
-          <span class="card-title">TEST Title</span>
-        </div>
-        <div class="card-content">
-          <p> TEST CONTENT</p>
-        </div>
-        <div class="card-action">
-          <a href="#">TEST PRICE</a>
-        </div>
-      </div>
+    
+    {% endfor %}
     </div>
+    
   
-
-  
-    <div class="col s4">
-      <div class="card">
-        <div class="card-image">
-          <img src="https://image.shutterstock.com/image-photo/puppy-sitting-grass-copyspace-on-260nw-107504981.jpg">
-          <span class="card-title">TEST Title</span>
-        </div>
-        <div class="card-content">
-          <p> TEST CONTENT</p>
-        </div>
-        <div class="card-action">
-          <a href="#">TEST PRICE</a>
-        </div>
-      </div>
-    </div>
-  </div>
-{% endblock content %}
+    {% endblock content %}
