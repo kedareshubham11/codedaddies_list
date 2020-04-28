@@ -2,7 +2,9 @@ import requests
 from requests.compat import quote_plus
 from django.shortcuts import render
 from bs4 import BeautifulSoup
-from . import models
+from django.utils import timezone
+from . models import Search
+from django.http import HttpResponseRedirect
 
 BASE_CGSLIST_URL = 'https://losangeles.craigslist.org/search/?query={}'
 BASE_IMAGE_URL = 'https://images.craigslist.org/{}_300x300.jpg'
@@ -12,7 +14,10 @@ def home(request):
 
 def new_search(request):
     search = request.POST.get('search')
-    models.Search.objects.create(search=search)
+    if search:
+        time = timezone.now()
+        s1=Search.objects.create(search=search,created=time)
+    
     final_url = BASE_CGSLIST_URL.format(quote_plus(search))
     no_res = ''
     
@@ -56,5 +61,21 @@ def new_search(request):
         }
     except:
         stuff_for_front_end = { 'errormessage' : 'Check Your Internet Connection'}
-
+    if search:
+        s1.save()
     return render(request, 'my_app/new_search.html', stuff_for_front_end)
+
+def search_history(request):
+    data = Search.objects.all().order_by('-created')
+    stuff_for_front_end = {
+        'history' : data,
+    }
+    return render(request, 'my_app/search_history.html',stuff_for_front_end)
+
+def delete_history(request, history_id):
+    Search.objects.get(id=history_id).delete()
+    return HttpResponseRedirect('/')
+
+def delete_all_history(request):
+    Search.objects.all().delete()
+    return HttpResponseRedirect('/')
