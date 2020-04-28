@@ -4,6 +4,8 @@
 
 
 <h3 style='text-align: center'>Search History </h3>
+{% if history %}
+
 <form action="delete_all_history" method="post">
     {% csrf_token %}
         <div class="right-align">
@@ -15,7 +17,7 @@
         
     <div class="collection">
         {% for data in history %}
-            <a href="#!" class="collection-item">
+            <a href="goto/{{ data.search }}" class="collection-item">
                 <span class="badge">
                     <form action="delete_history/{{ data.id }}" method="post">
                     {% csrf_token %}
@@ -28,7 +30,11 @@
             </a>
         {% endfor %}
     </div>
-                        
-    
+{% else %}
+<div class="center-align">
+<i class="large material-icons center" style="color: green">restore</i>
+<h5>Go see the sites! The pages you visit will show up here..</h5>
+</div>
+{% endif %}
     
 {% endblock content %}
