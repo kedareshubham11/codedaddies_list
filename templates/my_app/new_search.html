@@ -2,7 +2,12 @@
 {% csrf_token %}
 {% block content %}
     <h2 style="text-align: center">{{ search | title }}</h2>
-
+  {% if errormessage %}
+  <script>alert('{{ errormessage }}');</script>
+  {% endif %}
+  {% if no_res %}
+  <h4 style="text-align: center">{{ no_res | title }}</h4>
+  {% endif %}
     <div class="row">
     {% for post in final_postings %}
     
